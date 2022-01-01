@@ -9,7 +9,12 @@ class DanhMucModel extends DB
     }
     function ListAll()
     {
-       return $this->QueryAll();
+       $kq= $this->QueryAll();//gọi hàm query all bên DB
+       return json_encode($kq);
+    }
+    function InfoDanhMuc($id) {
+        $kq = $this->QueryOne($id);
+        return json_encode($kq);
     }
    
     

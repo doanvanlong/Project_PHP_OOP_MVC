@@ -18,10 +18,16 @@ class DB
   
     function QueryAll() {
         // this -> table , khi class kế thừa phải xet table cho nó
-        $sql="SELECT * FROM  danh_muc";
+        $sql="SELECT * FROM  " .$this->table;
         $stmt=$this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+    function QueryOne($id){
+        $sql="SELECT * FROM ".$this->table ." WHERE id_dm =$id";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->execute();
+       return  $stmt->fetch();
     }
 }
 ?>

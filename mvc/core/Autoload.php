@@ -1,5 +1,5 @@
 <?php
-// Load tất cả class Midlleware trong Disk middlewares 
+// Load tất cả class Midlleware trong Thư mục middlewares 
     spl_autoload_register('Loader');
     function Loader($className){
         $path="./mvc/middlewares/";

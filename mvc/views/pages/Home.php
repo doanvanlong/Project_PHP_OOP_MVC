@@ -9,17 +9,11 @@
         </tr>
     </thead>
     <tbody>
-        <?php
-        $i=0;
-        foreach ($data['ListAll'] as $listall) : $i++;
-        ?>
-            <tr>
-                <th scope="row"><?=$i;?></th>
-                <td><?=$listall['ten_dm']?></td>
-              
-            </tr>
-        <?php
-        endforeach;
-        ?>
+        
     </tbody>
 </table>
+<?php
+    // $rs=json_decode($data['ListAll'],true);//true trả về array,mặc định false OBJect
+    // var_dump($rs);
+    print_r($data['ListAll']);
+?>
