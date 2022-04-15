@@ -1,1 +1,0 @@
-<footer class="footer bg-dark">Footer</footer>
