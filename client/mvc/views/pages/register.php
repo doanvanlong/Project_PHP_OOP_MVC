@@ -25,16 +25,15 @@
             <div class="col-6 mx-auto p-5" style="background-color:var(--bs-dark);box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;border-radius: 15px;">
                 <!-- Register -->
                 <h3 class="mb-6 text-white">Đăng ký tài khoản miễn phí!</h3>
-
                 <!-- Form Register -->
-                <form class="mb-5">
+                <form class="mb-5" method="post" action="../../account/xulyregister/">
 
                     <!-- Username -->
                     <div class="form-group mb-5 ">
                         <label for="modalSignupUsername1" class="text-white">
                             Họ tên
                         </label>
-                        <input type="text" class="form-control" id="modalSignupUsername1" ng-model="nameRegister" placeholder="">
+                        <input type="text" class="form-control" id="modalSignupUsername1" name="name" placeholder="">
                     </div>
 
                     <!-- Email -->
@@ -42,8 +41,8 @@
                         <label for="modalSignupEmail1" class="text-white">
                             Email
                         </label>
-                        <input type="email" class="form-control"  ng-model="emailRegister" id="modalSignupEmail1" placeholder="">
-                        <small class="text-danger error-emailRegister"></small>
+                        <input type="email" class="form-control"  name="email" id="modalSignupEmail1" placeholder="">
+                        <small class="text-danger error-emailRegister"><?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];}?></small>
                     </div>
 
                     <!-- Password -->
@@ -51,14 +50,14 @@
                         <label for="modalSignupPassword3" class="text-white">
                             Mật khẩu
                         </label>
-                        <input type="password" class="form-control"  ng-model="passRegister" id="modalSignupPassword3" placeholder="">
+                        <input type="password" class="form-control"  name="password" id="modalSignupPassword3" placeholder="">
                     </div>
                     
                     <div class="form-group mb-5">
                         <label for="modalSignupPassword3" class="text-white">
                             Ngày sinh
                         </label>
-                        <input type="text"  ng-model="birthdayRegister" class="form-control" id="modalSignupPassword3">
+                        <input type="date" name="birthday"   class="form-control" id="modalSignupPassword3">
                     </div>
 
                     <div class="form-group mb-5">
@@ -67,14 +66,14 @@
                         </label>
                         <br>
                         <label for="male" style="color:white">Nam</label>
-                        <input type="radio"  ng-model="genderRegister" class="" id="male" name="gender">
+                        <input type="radio"  value="0" class="" id="male" name="gender">
                         <label style="color:white" for="female">Nữ</label>
-                        <input type="radio" class=""  ng-model="genderRegister" id="female" name="gender">
+                        <input type="radio" class=""  value="1" id="female" name="gender">
 
                     </div>
 
                     <!-- Submit -->
-                    <button class="btn btn-block btn-primary" ng-click="register()" type="submit">
+                    <button class="btn btn-block btn-primary" type="submit">
                         Đăng ký
                     </button>
 

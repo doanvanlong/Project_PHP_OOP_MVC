@@ -1,11 +1,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.9/angular.min.js" integrity="sha512-CjpXuCK2f47gfxIjQvOwKRVGj01yHWI5qdMTO0qzERireNL30uf+fXLeZ5OxKGDj7r8xpRK4XVxgqXhBbW8Tbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <div class="container " ng-app="myApp" ng-controller="quizapp">
-
     <div class="my-5 container">
         <input type="hidden" value="<?= $data['result']['id'] ?>" id="subject_id">
         <div ng-show="!check">
             <div class="card mb-5">
                 <div class="card-header">
+                    <input type="hidden" id="subject_name" value="<?= $data['result']['subject_name'] ?>">
                     <h2 class="card-title text-uppercase"><?= $data['result']['subject_name'] ?></h2>
                 </div>
                 <div class="row p-5">
@@ -29,7 +29,7 @@
             </div>
 
         </div>
-
+        <input type="hidden" name="id" value="<?= $id = $_SESSION['login']['id'] ?>" id="id">
         <div class="row" ng-show="check">
             <div ng-show="quizOver">
                 <div class="text-center">
@@ -39,7 +39,7 @@
                     <h5 ng-show="score>5">Chúc mừng bạn đã vượt qua được bài kiểm tra.</h5>
                     <div>
                         <button class="btn btn-primary py-2 " ng-click="reset()">Làm lại Quiz</button>
-                        <button class="btn btn-primary py-2 " ng-click="save()">Lưu kết quả</button>
+                        <button class="btn btn-primary py-2 " ng-click="luu()">Lưu kết quả</button>
                     </div>
                 </div>
             </div>
@@ -103,14 +103,20 @@
 <script>
     let app = angular.module('myApp', []);
     app.controller('quizapp', function($scope, $timeout, $http) {
+        $scope.id = document.getElementById('id').value;
+
         $scope.subject_id = document.getElementById('subject_id').value;
+        $scope.subject_name = document.getElementById('subject_name').value;
+
         //   $http.get('../../')
         $scope.check = false;
         $scope.curentQuestion = 0;
         $scope.score = 0;
         $scope.quizOver = false;
         $scope.ok = false;
+
         $scope.call = function(data) {
+
             $scope.questions = data;
             $scope.ok = true;
 
@@ -135,7 +141,7 @@
             $scope.check = true;
 
             //đồng hồ
-            $scope.counter = 1000000;
+            $scope.counter = 600;
 
             function secondsToHms(d) {
                 d = Number(d);
@@ -172,7 +178,27 @@
 
         //get câu hỏi
         // câu hỏi
+        $scope.luu = function() {
 
+            $.ajax({
+                type: "POST",
+                url: '../../quiz/saveHistory/',
+                data: {
+                    'id_subject':$scope.subject_id,
+                    'id_user': $scope.id,
+                    'name': $scope.subject_name,
+                    'score': $scope.score
+                },
+                success: function(data) {
+                    if(data ==1){
+                        location.href="../../account/historyQuiz/";
+                    }else{
+
+                    }
+
+                },
+            });
+        }
         $scope.getQuestion = function() {
 
             // chọn câu hỏi trong mảng theo index i ++ 

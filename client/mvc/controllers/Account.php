@@ -2,10 +2,14 @@
 class Account extends Controller
 {
     public $UserModel;
+    public $HistoryModel;
+
 
     function __construct()
     {
         $this->UserModel = $this->Model('UserModel');
+        $this->HistoryModel = $this->Model('HistoryModel');
+
     }
     // các func là action bổ sung cho Controllers 
     function Login()
@@ -71,10 +75,10 @@ class Account extends Controller
     function xulyupdate()
     {
         $img = $_POST['imgold'];
-        $folderUp = dirname(dirname(dirname(dirname(__FILE__)))).'/admin/public/upload/' ;
+        $folderUp = dirname(dirname(dirname(dirname(__FILE__)))) . '/admin/public/upload/';
         if ($_FILES['img']['name'] != '') {
 
-            $folderUp = dirname(dirname(dirname(dirname(__FILE__)))).'/admin/public/upload/' ;
+            $folderUp = dirname(dirname(dirname(dirname(__FILE__)))) . '/admin/public/upload/';
 
             // echo $folderUp;
             move_uploaded_file($_FILES['img']['tmp_name'], $folderUp . $_FILES['img']['name']);
@@ -102,9 +106,47 @@ class Account extends Controller
         }
         header('Location:../account/profile/');
     }
-    function Register()
+    function xulyregister()
     {
 
+        // $folderUp = dirname(dirname(dirname(dirname(__FILE__)))) . '/admin/public/upload/';
+        // // echo $folderUp;
+        // move_uploaded_file($_FILES['img']['tmp_name'], $folderUp . $_FILES['img']['name']);
+        // //  kết quả trả về từ model gọi hàm ListAll model
+        $password = $_POST['password'];
+        // check email//
+        $email = $_POST['email'];
+        $user = $this->UserModel->QueryOne('email', '=', "'$email'");
+        if ($user) {
+            // echo 1;
+            $_SESSION['msg']='Email đã tồn tại!';
+
+            header('Location:../../account/register/');
+        } else {
+            // echo 0;
+            $result = $this->UserModel->insertUser([
+                'email' => $_POST['email'],
+                'password' => $password,
+                'name' => $_POST['name'],
+                'img' => '',
+                'birthday' => $_POST['birthday'],
+                'gender' => $_POST['gender'],
+                'phone' => '',
+                'role' => 0
+
+            ]);
+            unset($_SESSION['msg']);
+        if ($result) {
+            setcookie('msg', 'Đăng ký thành công!', time() + 10);
+        } else {
+            setcookie('msg', 'Đăng ký thất bại!', time() + 10);
+        }
+        header('Location:../../account/login/');
+        }
+
+    }
+    function Register()
+    {
         $this->View(
             "LayoutClient",
             [
@@ -113,4 +155,17 @@ class Account extends Controller
             // gán lại Kết quả trả từ model cho HTML view thông qua tham số truyền vào view 
         );
     }
+    function historyQuiz()
+    {
+        $rs=$this->HistoryModel->QueryAll('quizhistory.id_user','=','user.id','quizhistory.id','desc','user.id','=',$_SESSION['login']['id']);
+        $this->View(
+            "LayoutClient",
+            [
+                "page" => "historyquiz",
+                'result'=>$rs
+            ]
+            // gán lại Kết quả trả từ model cho HTML view thông qua tham số truyền vào view 
+        );
+    }
+    
 }

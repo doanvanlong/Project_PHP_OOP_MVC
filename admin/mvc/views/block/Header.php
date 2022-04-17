@@ -157,7 +157,7 @@
           <img src="../../public/admin/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="../../home/first/" class="d-block">Admin</a>
+          <a href="../../home/first/" class="d-block"><?php if(isset($_SESSION['login'])){echo $_SESSION['login']['name'];} ?></a>
         </div>
       </div>
 

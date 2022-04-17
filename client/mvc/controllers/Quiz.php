@@ -4,6 +4,8 @@ class Quiz extends Controller
     public $SubjectModel;
     public $UserModel;
     public $QuestionModel;
+    public $HistoryModel;
+
 
 
     function __construct()
@@ -13,6 +15,7 @@ class Quiz extends Controller
         $this->SubjectModel = $this->Model('SubjectModel');
         $this->UserModel = $this->Model('UserModel');
         $this->QuestionModel = $this->Model('QuestionModel');
+        $this->HistoryModel = $this->Model('HistoryModel');
     }
     // các func là action bổ sung cho Controllers 
     function First($id)
@@ -31,11 +34,21 @@ class Quiz extends Controller
         }
         header('Location:../../account/login/');
     }
-    function quizapp()
+    function saveHistory()
     {
-        $this->View("LayoutClient", [
-            'page' => "quiapp"
+        // var_dump($_POST);
+        //thêm lịch sử quiz vào db
+        $rs = $this->HistoryModel->insertHistory([
+            'id_subject'=>$_POST['id_subject'],
+            'subject_name' =>$_POST['name'],
+            'score' => $_POST['score'],
+            'id_user' => $_POST['id_user']
         ]);
+        if($rs){
+            echo 1;
+        }else{
+            echo 0;
+        }
     }
     function SubjectQuestion($id)
     {
